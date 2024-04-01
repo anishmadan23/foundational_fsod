@@ -1,6 +1,9 @@
 # Foundational Few Shot Object Detection (F-FSOD)
 [![arXiv](https://img.shields.io/badge/arXiv-2312.14494-b31b1b.svg)](https://arxiv.org/abs/2312.14494)
 
+
+#### [Anish Madan](https://anishmadan23.github.io/), [Neehar Peri](https://www.neeharperi.com/), [Shu Kong](https://aimerykong.github.io/), [Deva Ramanan](https://www.cs.cmu.edu/~deva/)
+
 ![teaser.png](assets/teaser.png)
 
 ## Abstract
@@ -39,7 +42,7 @@ python train_net.py --num-gpus 1 --config-file <config_path>  --pred_all_class  
  - `ROI_BOX_HEAD.ALL_ANN_FILE`: Used in sampling strategy for fedloss. If using with pseudonegatives, fill this field with predictions on the few-shot trainset from a teacher model.
 
  ### PseudoNegatives Training
- 1. Train a teacher model T or use the pretrained model available. 
+ 1. Train a teacher model or use the pretrained model available. 
  2. Make a new config to run inference on FSOD trainset, for eg. by setting DATASETS.TEST as `nuimages_fsod_train_seed_0_shots_10`
  3. Convert the generated predictions `.pth` file to COCO format by using `tools/convert_preds_to_ann.py`. Also specify the confidence threshold to filter pseudolabels. See sample command below
 
@@ -57,17 +60,27 @@ python train_net.py --num-gpus 8 --config-file <config_path>  --pred_all_class -
 
 ## TODO
 - [x] Code cleanup 
-- [x] Data related support in code
 - [x] Release FSOD training files 
+- [ ] FIOD support and config
 - [ ] FSOD Data split creation : nuImages along with new split
 - [ ] Release trained model 
+
 - ------------
 - [ ] LVIS support in data and training models
 
 
 ## Acknowledgment
-
+We thank the authors of the following repositories for their open-source implementations which were used in building the current codebase:
+1. [Detic: Detecting Twenty-thousand Classes using Image-level Supervision](https://github.com/facebookresearch/Detic)
+2. [Detectron2](https://github.com/facebookresearch/detectron2)
 
 ## Citation
-
-
+If you find our paper and code repository useful, please cite us:
+```bib
+@article{madan2023revisiting,
+  title={Revisiting Few-Shot Object Detection with Vision-Language Models},
+  author={Madan, Anish and Peri, Neehar and Kong, Shu and Ramanan, Deva},
+  journal={arXiv preprint arXiv:2312.14494},
+  year={2023}
+}
+```
