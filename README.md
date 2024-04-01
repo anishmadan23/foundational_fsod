@@ -1,4 +1,4 @@
-# Foundational Few Shot Object Detection (F-FSOD)
+# Revisiting Few Shot Object Detection with Vision-Language Models
 [![arXiv](https://img.shields.io/badge/arXiv-2312.14494-b31b1b.svg)](https://arxiv.org/abs/2312.14494)
 
 
