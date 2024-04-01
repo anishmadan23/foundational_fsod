@@ -1,0 +1,74 @@
+third_party/detectron2
+./models
+configs-experimental
+experiments
+# output dir
+index.html
+data/*
+slurm/
+slurm
+slurm-output
+slurm-output/
+output
+instant_test_output
+inference_test_output
+
+
+./*.png
+*.diff
+*.jpg
+!/projects/DensePose/doc/images/*.jpg
+
+# compilation and distribution
+__pycache__
+_ext
+*.pyc
+*.pyd
+*.so
+*.dll
+*.egg-info/
+build/
+dist/
+wheels/
+
+# pytorch/python/numpy formats
+*.pth
+*.pkl
+*.ts
+model_ts*.txt
+
+# ipython/jupyter notebooks
+
+**/.ipynb_checkpoints/
+
+# Editor temporaries
+*.swn
+*.swo
+*.swp
+*~
+
+# editor settings
+.idea
+.vscode
+_darcs
+
+# project dirs
+/detectron2/model_zoo/configs
+/datasets/*
+!/datasets/*.*
+!/datasets/metadata
+/projects/*/datasets
+/models
+/snippet
+results/
+scripts/datasets/*
+detdetic-lt3d.code-workspace1.code-workspace
+scripts/multiseed_expt_runs/
+scripts/multiseed_expt_runs_self_training/
+scripts/multiseed_expt_runs_self_training_eval/
+
+configs/working_configs/
+
+delete_checkpoints.py
+
+configs/my_configs/*

@@ -1,0 +1,6 @@
+[submodule "third_party/Deformable-DETR"]
+	path = third_party/Deformable-DETR
+	url = https://github.com/fundamentalvision/Deformable-DETR.git
+[submodule "third_party/CenterNet2"]
+	path = third_party/CenterNet2
+	url = git@github.com:anishmadan23/CenterNet2_lt3d.git

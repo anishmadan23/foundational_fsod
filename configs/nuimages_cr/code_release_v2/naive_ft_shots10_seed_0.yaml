@@ -1,0 +1,90 @@
+_BASE_: Base-C2_L_R5021k_640b64_4x.yaml
+MODEL:
+  MASK_ON: false
+  # WEIGHTS: "models/BoxSup-C2_LCOCO_CLIP_SwinB_896b32_4x.pth"
+  WEIGHTS: models/Detic_LCOCOI21k_CLIP_SwinB_896b32_4x_ft4x_max-size.pth
+  DYNAMIC_CLASSIFIER: false              # it samples classes for an epoch/iteration when dealing with large number of classes like in LVIS.
+  NUM_SAMPLE_CATS: 4                   # num sample cats for fed loss (negatives+postives from GT)
+  ROI_BOX_HEAD:
+    USE_ZEROSHOT_CLS: true
+    IMAGE_LABEL_LOSS: max_size
+    ZEROSHOT_WEIGHT_PATH: rand
+    FED_LOSS_NUM_CAT: 4           # doesn't matter for deterministic negatives
+    USE_FED_LOSS: false # Federated loss is enabled when DYNAMIC_CLASSIFIER is on
+    CAT_FREQ_PATH: datasets/metadata/nuimages_v1.0-train_cat_info.json         # used for dynamic classifier
+
+    # used for determining sampling strategy during fedloss and its variants; also used to determine pseudonegatives-- replace GT with predictions 
+    ALL_ANN_FILE: datasets/nuimages/annotations/no_wc/nuimages_v1.0-train.json    
+      
+    INVERSE_WEIGHTS: false                # inverse fedloss
+    DETERMINISTIC_FED_LOSS: false           # detfedloss
+  ROI_HEADS:
+    NUM_CLASSES: 18
+    SCORE_THRESH_TEST: 0.02     # confidence_threshold for score filtering
+    NMS_THRESH_TEST: 1.0     # always 1.0: done to prevent intra-class nms from working before relabeling predictions (otherwise would reduce AP or increase FalsePositives for certain classes)
+    POST_LABELING_NMS_THRESH_TEST: 0.5            # key nms threshold
+  BACKBONE:
+    NAME: build_swintransformer_fpn_backbone
+  SWIN:
+    SIZE: B-22k
+  FPN:
+    IN_FEATURES: [swin1, swin2, swin3]
+  CENTERNET:
+    POST_NMS_TOPK_TEST: 512
+  RESET_CLS_TESTS: true                 # set to True to use clip clf weights
+  RESET_CLS_TRAIN: true                 # set to True to use clip clf weights
+  TRAIN_CLASSIFIERS: ("datasets/metadata/nuimages_all_cls_no_wc.npy",)   #supports only 1 element in list
+  TRAIN_NUM_CLASSES: [18]
+  TEST_CLASSIFIERS: ("datasets/metadata/nuimages_all_cls_no_wc.npy",)
+  TEST_NUM_CLASSES: [18]
+TEST:
+  DETECTIONS_PER_IMAGE: 1000                                  # causing lot of memory usage (RAM); can crash if kept around 10k
+  VAL_PERIOD: 0
+SOLVER:
+  FREEZE_BACKBONE: true
+  FINETUNE_MODEL_KEYWORDS: [roi_heads]
+  MAX_ITER: 8000
+  IMS_PER_BATCH: 8             # batchsize
+  BASE_LR: 3.75e-6
+  WARMUP_ITERS: 50    # original 1000
+  CHECKPOINT_PERIOD: 300
+  WARMUP_FACTOR: 0.01
+DATASETS:
+  TRAIN: ("nuimages_fsod_train_seed_0_shots_10",)          # use the name in train to get val data file
+  TEST: ("nuimages_all_cls_val_no_wc",)
+  # RELABEL_PREDS: false
+  ALL_CLASSES: '[ {"id": 0, "name": "car", "supercategory": "vehicle"}, {"id": 1,
+    "name": "truck", "supercategory": "vehicle"}, {"id": 2, "name": "construction_vehicle",
+    "supercategory": "vehicle"}, {"id": 3, "name": "bus", "supercategory": "vehicle"},
+    {"id": 4, "name": "trailer", "supercategory": "vehicle"}, {"id": 5, "name": "emergency",
+    "supercategory": "vehicle"}, {"id": 6, "name": "motorcycle", "supercategory":
+    "vehicle"}, {"id": 7, "name": "bicycle", "supercategory": "vehicle"}, {"id": 8,
+    "name": "adult", "supercategory": "pedestrian"}, {"id": 9, "name": "child", "supercategory":  "pedestrian"},
+    {"id": 10, "name": "police_officer", "supercategory":  "pedestrian"}, {"id": 11,
+    "name": "construction_worker", "supercategory":  "pedestrian"}, {"id": 12, "name":
+    "personal_mobility", "supercategory": "pedestrian"}, {"id": 13, "name": "stroller",
+    "supercategory": "pedestrian"}, {"id": 14, "name": "pushable_pullable", "supercategory":  "movable_object"},
+    {"id": 15, "name": "barrier", "supercategory": "movable_object"}, {"id": 16, "name":
+    "traffic_cone", "supercategory": "movable_object"}, {"id": 17, "name": "debris",
+    "supercategory": "movable_object"} ]'
+  NUM_ORIG_CLASSES: 18
+DATALOADER:
+  SAMPLER_TRAIN: TrainingSampler
+  SAMPLER_VAL: InferenceSampler
+  DATASET_RATIO: [1]
+  USE_DIFF_BS_SIZE: true
+  DATASET_BS: [32]
+  DATASET_INPUT_SIZE: [1600]    # not related to input image size
+  USE_RFS: [true, false]
+  DATASET_INPUT_SCALE: [[0.1, 2.0]]
+  FILTER_EMPTY_ANNOTATIONS: false
+  MULTI_DATASET_GROUPING: false
+  DATASET_ANN: [box]
+  NUM_WORKERS: 4
+  USE_TAR_DATASET: false
+WITH_IMAGE_LABELS: false
+INPUT:
+  MIN_SIZE_TEST: 900
+  MAX_SIZE_TEST: 1600
+  # MIN_SIZE_TRAIN: 
+  MAX_SIZE_TRAIN: 1600
