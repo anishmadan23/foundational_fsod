@@ -18,7 +18,7 @@ See [installation instructions](docs/INSTALL.md).
 See [datasets/README.md](datasets/README.md)
 
 ## Models
-Create `models/` in root directory and download pre-trained model used for FSOD training from [here](https://huggingface.co/anishmadan23/foundational_fsod/tree/main/pretrained_models/)
+Create `models/` in the root directory and download pre-trained model [here](https://huggingface.co/anishmadan23/foundational_fsod/tree/main/pretrained_models/)
 
 ## Training
 ```python
@@ -29,28 +29,28 @@ python train_net.py --num-gpus 1 --config-file <config_path>  --pred_all_class  
  - Naive Finetuning: [`configs/nuimages_cr/code_release_v2/naive_ft_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/naive_ft_shots10_seed_0.yaml)
  - FedLoss: [`configs/nuimages_cr/code_release_v2/fedloss_num_sample_cats_4_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/fedloss_num_sample_cats_4_shots10_seed_0.yaml)
  - Inverse FedLoss: [`configs/nuimages_cr/code_release_v2/invfedloss_num_sample_cats_4_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/invfedloss_num_sample_cats_4_shots10_seed_0.yaml)
- - PseudoNegatives: [`configs/nuimages_cr/code_release_v2/pseudo_negatives_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/pseudo_negatives_shots10_seed_0.yaml)
- - Deterministic FedLoss or True Negatives (Oracle): [`configs/nuimages_cr/code_release_v2/detfedloss_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/detfedloss_shots10_seed_0.yaml)
+ - Pseudo-Negatives: [`configs/nuimages_cr/code_release_v2/pseudo_negatives_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/pseudo_negatives_shots10_seed_0.yaml)
+ - True Negatives Oracle: [`configs/nuimages_cr/code_release_v2/detfedloss_shots10_seed_0.yaml`](configs/nuimages_cr/code_release_v2/detfedloss_shots10_seed_0.yaml)
 
  
  ### Key Config Fields
  - `DATASETS.TRAIN`: Specify training split according to registered datasets.
- - `DATASETS.TEST`: Test set to evaluate method on
- - `ROI_BOX_HEAD.FED_LOSS_NUM_CAT`: Num of categories to be sampled for FedLoss
+ - `DATASETS.TEST`: Specify testing split according to registered datasets.
+ - `ROI_BOX_HEAD.FED_LOSS_NUM_CAT`: Number of categories to be sampled for FedLoss
  - `ROI_BOX_HEAD.USE_FED_LOSS`: Flag to enable federated loss
  - `ROI_BOX_HEAD.INVERSE_WEIGHTS`: Flag to enable inverse frequency weights with federated loss
- - `ROI_BOX_HEAD.ALL_ANN_FILE`: Used in sampling strategy for fedloss. If using with pseudonegatives, fill this field with predictions on the few-shot trainset from a teacher model.
+ - `ROI_BOX_HEAD.ALL_ANN_FILE`: Used in sampling strategy for FedLoss. If using with Pseudo-Negatives, use predictions from the teacher model.
 
- ### PseudoNegatives Training
- 1. Train a teacher model or use the pretrained model available. 
- 2. Make a new config to run inference on FSOD trainset, for eg. by setting DATASETS.TEST as `nuimages_fsod_train_seed_0_shots_10`
- 3. Convert the generated predictions `.pth` file to COCO format by using `tools/convert_preds_to_ann.py`. Also specify the confidence threshold to filter pseudolabels. See sample command below
+ ### Pseudo-Negatives Training
+ 1. Train (or use an off-the-shelf pre-trained) teacher model. 
+ 2. Make a new config to run inference on the FSOD trainset (e.g. Set DATASETS.TEST to `nuimages_fsod_train_seed_0_shots_10`)
+ 3. Convert the generated predictions `.pth` file to the COCO format by using `tools/convert_preds_to_ann.py`. Be sure to specify the confidence threshold to filter pseudolabels. See sample command below:
 
 ```python
 python tools/convert_preds_to_ann.py --pred_path_train <path_trainset_eval_pth_file> --dataset_name nuimages_fsod_train_seed_0_shots_10 --conf_thresh 0.2
 ```
 
-4. Plug the generated file in pseudonegatives config file (in `ROI_BOX_HEAD.ALL_ANN_FILE`)
+4. Set `ROI_BOX_HEAD.ALL_ANN_FILE` to the generated predictions.
 
 ## Inference
 
