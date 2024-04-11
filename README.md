@@ -44,7 +44,7 @@ python train_net.py --num-gpus 1 --config-file <config_path>  --pred_all_class  
  ### Pseudo-Negatives Training
  1. Train (or use an off-the-shelf pre-trained) teacher model. 
  2. Make a new config to run inference on the FSOD trainset (e.g. Set DATASETS.TEST to `nuimages_fsod_train_seed_0_shots_10`)
- 3. Convert the generated predictions `.pth` file to the COCO format by using `tools/convert_preds_to_ann.py`. Be sure to specify the confidence threshold to filter pseudolabels. See sample command below:
+ 3. Convert the generated predictions `.pth` file to the COCO format by using `tools/convert_preds_to_ann.py`. Be sure to specify the confidence threshold to filter pseudolabels. The predictions are saved in the directory corresponding to the trainset evaluation. See sample command below:
 
 ```python
 python tools/convert_preds_to_ann.py --pred_path_train <path_trainset_eval_pth_file> --dataset_name nuimages_fsod_train_seed_0_shots_10 --conf_thresh 0.2
