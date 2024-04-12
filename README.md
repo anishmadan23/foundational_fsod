@@ -9,7 +9,7 @@
 ![teaser.png](assets/teaser.png)
 
 ## :star: [Foundational FSOD Challenge](https://eval.ai/web/challenges/challenge-page/2270/overview)
-We are releasing a Foundational FSOD challenge as part of the [Workshop on Visual Perception and Learning in an Open World](https://vplow.github.io/vplow_4th.html) at CVPR 2024. We are accepting submissions till 7th June 2024! 
+We are releasing a [Foundational FSOD challenge](https://eval.ai/web/challenges/challenge-page/2270/overview) as part of the [Workshop on Visual Perception and Learning in an Open World](https://vplow.github.io/vplow_4th.html) at CVPR 2024. We are accepting submissions till 7th June 2024! 
 
 ## Abstract
 Few-shot object detection (FSOD) benchmarks have advanced techniques for detecting new categories with limited annotations. Existing benchmarks repurpose wellestablished datasets like COCO by partitioning categories into base and novel classes for pre-training and finetuning respectively. However, these benchmarks do not reflect how FSOD is deployed in practice. Rather than only pre-training on a small number of base categories, we argue that it is more practical to fine-tune a foundation model (e.g., a vision-language model (VLM) pre-trained on webscale data) for a target domain. Surprisingly, we find that zero-shot inference from VLMs like GroundingDINO significantly outperforms the state-of-the-art (48.3 vs. 33.1 AP) on COCO. However, such zero-shot models can still be **misaligned** to target concepts of interest. For example,
