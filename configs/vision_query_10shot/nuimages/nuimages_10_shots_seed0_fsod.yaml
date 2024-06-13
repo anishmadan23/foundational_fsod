@@ -1,0 +1,75 @@
+MODEL:
+  BACKBONE:
+    FREEZE_CONV_BODY_AT: -1
+  ATSS:
+    NUM_CLASSES: 19 # these fields are not used; just a placeholder
+    DETECTIONS_PER_IMG: 100
+  FCOS:
+    NUM_CLASSES: 19
+    DETECTIONS_PER_IMG: 100
+  ROI_BOX_HEAD:
+    NUM_CLASSES: 19
+  DYHEAD:
+    NUM_CLASSES: 19
+  RETINANET:
+    DETECTIONS_PER_IMG: 100
+  ROI_HEADS:
+    DETECTIONS_PER_IMG: 100
+  DYHEAD:
+    NUM_CLASSES: 19
+
+DATASETS:
+  REGISTER:
+    nuim_val: 
+      img_dir: nuimages/images
+      ann_file: nuimages/modified_annotations/no_wc/nuimages_v1.0-val.json
+    nuim_train_10_shots_seed_0_fsod:
+      img_dir: nuimages/images
+      ann_file: nuimages/fsod_data_10_seeds_detectron_modified_glip/no_wc/nuimages_fsod_train_seed_0_shots_10.json
+    nuim_val_challenge:
+      img_dir: nuimages/images
+      ann_file: nuimages/fsod_test_set_challenge_modified_glip/no_wc/test_set.json
+
+  TRAIN: ("nuim_train_10_shots_seed_0_fsod", )
+  TEST: ("nuim_val_challenge",)
+  USE_OVERRIDE_CATEGORY: True
+  DISABLE_SHUFFLE: False
+  FEW_SHOT: 10
+
+SOLVER:
+  STEPS: (0.67, 0.89)
+  BASE_LR: 0.00001
+  LANG_LR: 0.00001
+  GATE_LR: 0.0001
+  QUERY_LR: 0.00001
+  WEIGHT_DECAY: 0.05
+  WARMUP_ITERS: 20
+  USE_AUTOSTEP: True
+
+  TEST_WITH_INFERENCE: True
+
+  CHECKPOINT_PERIOD: 99999999
+  CHECKPOINT_PER_EPOCH: -1.0
+
+INPUT:
+  MIN_SIZE_TRAIN: 900
+  MAX_SIZE_TRAIN: 1600
+  MIN_SIZE_TEST: 900
+  MAX_SIZE_TEST: 1600
+DATALOADER:
+  SIZE_DIVISIBILITY: 32
+  ASPECT_RATIO_GROUPING: False
+TEST:
+  IMS_PER_BATCH: 1
+  CHUNKED_EVALUATION: 40
+  MDETR_STYLE_AGGREGATE_CLASS_NUM: 3000
+  DURING_TRAINING: False
+  EVAL_TASK: detection
+
+VISION_QUERY:
+  QUERY_BANK_PATH: 'MODEL/nuim_shots_10_seed_0_query_pool7_sel.pth'
+  VISION_SCALE: 1.0
+  PURE_TEXT_RATE: 0.
+  TEXT_DROPOUT: 0.
+  NUM_QUERY_PER_CLASS: 5
+  RANDOM_KSHOT: False
