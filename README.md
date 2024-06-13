@@ -1,9 +1,10 @@
 # Foundational FSOD - Adapted MQDet Codebase
 
-SWITCH TO MAIN BRANCH FOR DETIC CODEBASE
-
+## SWITCH TO MAIN BRANCH FOR DETIC CODEBASE
+## IMP NOTE: Use the [test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_mqdet_annotation_data/no_wc/test_set.json) file for evaluation
 ## Installation and Setup
 See [MQDet README](MQDET_README.md) for details on installation and setup.
+
 
 ## DATA Setup (nuImages)
 
