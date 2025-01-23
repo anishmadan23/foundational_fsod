@@ -145,7 +145,6 @@ def modify_dataset_for_few_shot(dataset, base_split_path, shots=5, seed=1, valmo
     
     return new_dataset
 
-
 if __name__ == '__main__':
     
     data_train = json.load(open(args.data_train_path))
@@ -154,16 +153,13 @@ if __name__ == '__main__':
     for cat_info in data_train['categories']:
         ID2CLASS[cat_info['id']] = cat_info['name']
     
-
     CLASS2ID = {v: k for k, v in ID2CLASS.items()}
-
 
     ann_by_cls_imgid = defaultdict(list)
     for idx, ann_info in enumerate(data_train['annotations']):
         ann_by_cls_imgid[ann_info['image_id']].append(ann_info['category_id'])
 
     print("Num images in split", len(data_train['images']))
-
 
     random_split_seeds = np.arange(args.num_splits)
     num_img_ids = len(data_train['images'])
@@ -178,9 +174,9 @@ if __name__ == '__main__':
 
 
     ### Few Shot Setup (Converting to JSON format to register it in Detectron2)
-    # IMP: Add dataset path related info in detectron along with registering it. (https://github.com/anishmadan23/detectron2-ffsod/blob/main/detectron2/data/datasets/builtin.py#L50)
+    # IMP: Add dataset path related info in detectron. (https://github.com/anishmadan23/detectron2-ffsod/blob/main/detectron2/data/datasets/builtin.py#L50)
 
-    # dset = load_coco_json(args.data_train_path, os.path.dirname(args.data_train_path), dataset_name='liver_disease_all_cls_train')
+    # dset = load_coco_json(args.data_train_path, os.path.dirname(args.data_train_path), dataset_name=f'{args.dset_name}_all_cls_train')
     # dset_dict_by_imgid = {x['image_id']:x for x in dset}          # needed for coco as image id aren't [0,... n-1] like in nuimages.
 
     # all_shots = [10]
@@ -198,7 +194,7 @@ if __name__ == '__main__':
     # for seed in all_seeds:
     #     for shots in all_shots:
     #         few_shot_dset = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=False)
-    #         few_shot_dset_json = convert_to_coco_dict_with_dset('liver_disease_all_cls_train', few_shot_dset)
+    #         few_shot_dset_json = convert_to_coco_dict_with_dset(f'{args.dset_name}_all_cls_train', few_shot_dset)
             
     #         # few_shot_dset_val = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=True)
     #         # few_shot_dset_val_json = convert_to_coco_dict_with_dset('nuimages_all_cls_train_no_wc', few_shot_dset_val)

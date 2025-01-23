@@ -72,3 +72,5 @@ configs/working_configs/
 delete_checkpoints.py
 
 configs/my_configs/*
+
+data2/
