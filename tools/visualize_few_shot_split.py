@@ -39,11 +39,15 @@ for image_id, annotations in annotations_by_image.items():
         # Convert BGR to RGB for visualization
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
+        # Keep track of classes present in the image
+        classes_present = set()
+
         # Draw all bounding boxes for the image
         for annotation in annotations:
             bbox = annotation['bbox']
             category_id = annotation['category_id']
             category_name = category_id_to_name.get(category_id, 'Unknown')
+            classes_present.add(category_name)
 
             # Draw bounding box
             x, y, width, height = bbox
@@ -59,8 +63,11 @@ for image_id, annotations in annotations_by_image.items():
             # Put label
             cv2.putText(img, category_name, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
 
-        # Save visualized image
-        output_path = os.path.join(output_dir, os.path.basename(image_file))
-        plt.imsave(output_path, img)
+        # Save visualized image into respective class folders
+        for class_name in classes_present:
+            class_dir = os.path.join(output_dir, class_name)
+            os.makedirs(class_dir, exist_ok=True)
+            output_path = os.path.join(class_dir, os.path.basename(image_file))
+            plt.imsave(output_path, img)
 
 print(f"Visualized images saved to '{output_dir}'")
