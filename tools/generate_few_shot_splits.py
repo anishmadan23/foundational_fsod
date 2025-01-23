@@ -12,7 +12,7 @@ import glob
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument('--data_train_path', type=str, default='/data3/anishmad/roboflow_data/liver_disease/train/_annotations.coco.json')
-argparser.add_argument('--data_val_path', type=str, default='/data3/anishmad/roboflow_data/liver_disease/valid/_annotations.coco.json')
+# argparser.add_argument('--data_val_path', type=str, default='/data3/anishmad/roboflow_data/liver_disease/valid/_annotations.coco.json')
 argparser.add_argument('--base_save_path', type=str, default='/home/anishmad/msr_thesis/detic-lt3d/data2/')
 argparser.add_argument('--dset_name', type=str, default='liver_disease')
 argparser.add_argument('--num_splits', type=int, default=1)
@@ -178,33 +178,33 @@ if __name__ == '__main__':
 
 
     ### Few Shot Setup (Converting to JSON format to register it in Detectron2)
-    # IMP: Add dataset path related info in detectron along with registering it. (https://github.com/anishmadan23/detectron2-ffsod/blob/main/detectron2/data/datasets/builtin.py)
+    # IMP: Add dataset path related info in detectron along with registering it. (https://github.com/anishmadan23/detectron2-ffsod/blob/main/detectron2/data/datasets/builtin.py#L50)
 
-    dset = load_coco_json(args.data_train_path, os.path.dirname(args.data_train_path), dataset_name='liver_disease_all_cls_train')
-    dset_dict_by_imgid = {x['image_id']:x for x in dset}          # needed for coco as image id aren't [0,... n-1] like in nuimages.
+    # dset = load_coco_json(args.data_train_path, os.path.dirname(args.data_train_path), dataset_name='liver_disease_all_cls_train')
+    # dset_dict_by_imgid = {x['image_id']:x for x in dset}          # needed for coco as image id aren't [0,... n-1] like in nuimages.
 
-    all_shots = [10]
-    # all_seeds = np.arange(10)
-    all_seeds = [0]
-    base_fs_split_path = os.path.join(args.base_save_path, 'datasets', args.dset_name, 'fsod_data')    #saved individual splits here
-    save_new_anno_path = os.path.join(args.base_save_path, 'datasets', args.dset_name, 'fsod_data_detectron')
-    os.makedirs(save_new_anno_path, exist_ok=True)
+    # all_shots = [10]
+    # # all_seeds = np.arange(10)
+    # all_seeds = [0]
+    # base_fs_split_path = os.path.join(args.base_save_path, 'datasets', args.dset_name, 'fsod_data')    #saved individual splits here
+    # save_new_anno_path = os.path.join(args.base_save_path, 'datasets', args.dset_name, 'fsod_data_detectron')
+    # os.makedirs(save_new_anno_path, exist_ok=True)
 
                     
-    # #### Method to filter complete dataset acc to few shot split files
-    # - Start by loading full dataset. We then load FS split files.
-    # - For each annotation (A) in split file, we match it to some image's (I') annotation (A') in the full dataset, and use that full dataset image info , by modifying annotation according to FS split annotation. (I': A -> A')
+    # # #### Method to filter complete dataset acc to few shot split files
+    # # - Start by loading full dataset. We then load FS split files.
+    # # - For each annotation (A) in split file, we match it to some image's (I') annotation (A') in the full dataset, and use that full dataset image info , by modifying annotation according to FS split annotation. (I': A -> A')
 
-    for seed in all_seeds:
-        for shots in all_shots:
-            few_shot_dset = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=False)
-            few_shot_dset_json = convert_to_coco_dict_with_dset('liver_disease_all_cls_train', few_shot_dset)
+    # for seed in all_seeds:
+    #     for shots in all_shots:
+    #         few_shot_dset = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=False)
+    #         few_shot_dset_json = convert_to_coco_dict_with_dset('liver_disease_all_cls_train', few_shot_dset)
             
-            # few_shot_dset_val = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=True)
-            # few_shot_dset_val_json = convert_to_coco_dict_with_dset('nuimages_all_cls_train_no_wc', few_shot_dset_val)
+    #         # few_shot_dset_val = modify_dataset_for_few_shot(dset_dict_by_imgid, base_fs_split_path, shots=shots, seed=seed, valmode=True)
+    #         # few_shot_dset_val_json = convert_to_coco_dict_with_dset('nuimages_all_cls_train_no_wc', few_shot_dset_val)
             
-            train_fs_filename = f'{args.dset_name}_fsod_train_seed_{seed}_shots_{shots}.json'
-            val_fs_filename = f'{args.dset_name}_fsod_val_seed_{seed}_shots_{shots}.json'
+    #         train_fs_filename = f'{args.dset_name}_fsod_train_seed_{seed}_shots_{shots}.json'
+    #         val_fs_filename = f'{args.dset_name}_fsod_val_seed_{seed}_shots_{shots}.json'
             
-            with open(os.path.join(save_new_anno_path, train_fs_filename), 'w') as f:
-                json.dump(few_shot_dset_json, f)
+    #         with open(os.path.join(save_new_anno_path, train_fs_filename), 'w') as f:
+    #             json.dump(few_shot_dset_json, f)
