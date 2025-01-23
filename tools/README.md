@@ -17,3 +17,6 @@
   - Add [image dir and annotation file path](https://github.com/anishmadan23/detectron2-ffsod/blob/main/detectron2/data/datasets/builtin.py#L50-L56) in detectron2.
   - uncomment the lines towards the end in the above script.
   
+### TO visualize few-shot splits
+```python visualize_few_shot_split.py ```
+  
