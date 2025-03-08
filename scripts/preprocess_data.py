@@ -236,19 +236,48 @@ class PreprocessData:
                     output_path = os.path.join(class_dir, os.path.basename(image_file))
                     plt.imsave(output_path, img_copy)
     
+    # def get_rf_download_link_from_url(self, dataset_url):
+    #     # dataset_url = "https://universe.roboflow.com/roboflow-100/activity-diagrams-qdobr/dataset/1"
+    #     dataset_url = dataset_url.replace("/dataset/", "/")
+    #     url = os.path.join(dataset_url, "coco")
+    #     url = url.replace("https://universe", "https://api")
+    #     url = url.replace("https://app", "https://api")
+    #     print("Getting download link from", url)
+    #     response = requests.get(url, params={"api_key": API_KEY})
+    #     response.raise_for_status()
+    #     print(response.json())
+    #     link = response.json()["export"]["link"]
+    #     print('link', link)
+    #     return link
+
+
     def get_rf_download_link_from_url(self, dataset_url):
-        # dataset_url = "https://universe.roboflow.com/roboflow-100/activity-diagrams-qdobr/dataset/1"
+        # Modify the URL to target the API endpoint
         dataset_url = dataset_url.replace("/dataset/", "/")
         url = os.path.join(dataset_url, "coco")
         url = url.replace("https://universe", "https://api")
         url = url.replace("https://app", "https://api")
         print("Getting download link from", url)
-        response = requests.get(url, params={"api_key": API_KEY})
-        response.raise_for_status()
-        print(response.json())
-        link = response.json()["export"]["link"]
-        print('link', link)
-        return link
+
+        max_retries = 5
+        delay = 5  # seconds
+
+        for attempt in range(1, max_retries + 1):
+            response = requests.get(url, params={"api_key": API_KEY})
+            response.raise_for_status()
+            data = response.json()
+            print("API response:", data)
+
+            if "export" in data:
+                link = data["export"]["link"]
+                print("Download link:", link)
+                return link
+            else:
+                print(f"Attempt {attempt}/{max_retries}: Export link not ready yet. Retrying in {delay} seconds...")
+                time.sleep(delay)
+
+        raise KeyError("Export link not found in API response after multiple retries.")
+
 
     def get_dataset_name_from_url(self, dataset_url):
         return dataset_url.split("/")[-2]
@@ -336,11 +365,9 @@ def main(url, modes, num_shots=10, visualize=False):
         if prepro_data.visualize:
             prepro_data.visualize_best_split(best_split_save_path)
             
-    # return best_split_save_path, dataset_dir
 
 
 if __name__ == '__main__':
-    # import ipdb; ipdb.set_trace()
     links_csv = "datasets_links.csv"
     links = []
     with open(links_csv, "r") as f:
@@ -354,20 +381,19 @@ if __name__ == '__main__':
         # for mode in :
         # manually copy the train split to val split as that is empty -- hacky workaround
         # should have no effect for the zero-shot baseline
-        if url == 'https://app.roboflow.com/rf20vl/gwhd2021-fsod-oxon/1':  
-            main(
+        # if url == 'https://app.roboflow.com/rf20vl/gwhd2021-fsod-oxon/1':  
+        #     main(
+        #     url,
+        #     num_shots = 10,
+        #     modes=['train', 'test'],
+        #     visualize=False,
+        #     # min_instance_count=args.min_instance_count,
+        # )
+        # else:
+        main(
             url,
             num_shots = 10,
-            modes=['train', 'test'],
+            modes=modes,
             visualize=False,
             # min_instance_count=args.min_instance_count,
         )
-        else:
-                
-            main(
-                url,
-                num_shots = 10,
-                modes=modes,
-                visualize=False,
-                # min_instance_count=args.min_instance_count,
-            )

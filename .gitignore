@@ -78,3 +78,4 @@ data2/
 configs/rf_configs/
 datasets/metadata/cat_info/
 gen_data/
+data/

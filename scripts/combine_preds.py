@@ -20,7 +20,7 @@ def main(datasets_links_filepath, results_path):
         dset_pred_map[dset] = path_to_result_file
     
      # Define zip file path
-    zip_path = os.path.join(results_path,'predictions_rf20vl.zip')
+    zip_path = os.path.join(results_path,'predictions_rf20vl_zs.zip')
 
     # Create and add files to the zip
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
