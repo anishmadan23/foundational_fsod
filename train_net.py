@@ -7,6 +7,7 @@ import torch
 from torch.nn.parallel import DistributedDataParallel
 import time
 import datetime
+from pathlib import Path
 
 from fvcore.common.timer import Timer
 import detectron2.utils.comm as comm
@@ -38,6 +39,7 @@ from detectron2.data.dataset_mapper import DatasetMapper
 from detectron2.data.build import build_detection_train_loader, build_detection_val_loader
 from detectron2.utils.logger import setup_logger
 from torch.cuda.amp import GradScaler
+from tools.get_clip_features import compute_clip_features
 
 import json
 import torch
@@ -69,7 +71,8 @@ def do_test(cfg, model, path_suffix=None):
         if cfg.MODEL.RESET_CLS_TESTS:
                 reset_cls_test(
                     model,
-                    cfg.MODEL.TEST_CLASSIFIERS[d],
+                    compute_clip_features(MetadataCatalog.get(dataset_name).json_file)[0],
+                    # cfg.MODEL.TEST_CLASSIFIERS[d],
                     cfg.MODEL.TEST_NUM_CLASSES[d])
         mapper = None if cfg.INPUT.TEST_INPUT_TYPE == 'default' \
             else DatasetMapper(
@@ -117,7 +120,7 @@ def do_validation(cfg, data_loader, model, writers=None, train_iteration=-1):
         total_loss = 0
         total_loss_dict = None
         data_time = data_timer.seconds()
-
+        # import ipdb; ipdb.set_trace()
         for iteration, data in enumerate(data_loader):
             print(f'Running val iteration {iteration}')
 
@@ -311,8 +314,11 @@ def setup(args):
     cfg.merge_from_list(args.opts)
 
     if cfg.OUTPUT_DIR_PREFIX is not None:
-        suffix_file_name = args.config_file.replace('configs/my_configs/','')[:-5]
-        cfg.OUTPUT_DIR = os.path.join(cfg.OUTPUT_DIR_PREFIX, suffix_file_name)
+        suffix_file_name = args.config_file.split('configs/rf_configs/')[1].split('.yaml')[0]
+        # suffix_file_name = args.config_file.replace('configs/rf_configs/','')[:-5]
+        output_dir = Path(cfg.OUTPUT_DIR_PREFIX) / suffix_file_name
+        output_dir.mkdir(parents=True, exist_ok=True)
+        cfg.OUTPUT_DIR = str(output_dir)
 
     if not args.pred_all_class:
         cfg.MODEL.ROI_HEADS.ONE_CLASS_PER_PROPOSAL = True
@@ -337,11 +343,12 @@ def main(args):
     
     else:
         if cfg.MODEL.RESET_CLS_TRAIN:
+            dataset_name = cfg.DATASETS.TRAIN[0]
             reset_cls_test(
                 model,
-                cfg.MODEL.TRAIN_CLASSIFIERS[0],
+                compute_clip_features(MetadataCatalog.get(dataset_name).json_file)[0],
+                # cfg.MODEL.TRAIN_CLASSIFIERS[0],
                 cfg.MODEL.TRAIN_NUM_CLASSES[0])
-        []
     distributed = comm.get_world_size() > 1
     if distributed:
         model = DistributedDataParallel(

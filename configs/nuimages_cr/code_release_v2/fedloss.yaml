@@ -10,13 +10,13 @@ MODEL:
     IMAGE_LABEL_LOSS: max_size
     ZEROSHOT_WEIGHT_PATH: rand
     FED_LOSS_NUM_CAT: 4           # doesn't matter for deterministic negatives
-    USE_FED_LOSS: false # Federated loss is enabled when DYNAMIC_CLASSIFIER is on
+    USE_FED_LOSS: true # Federated loss is enabled when DYNAMIC_CLASSIFIER is on
     CAT_FREQ_PATH: datasets/metadata/nuimages_v1.0-train_cat_info.json         # used for dynamic classifier
 
     # used for determining sampling strategy during fedloss and its variants; also used to determine pseudonegatives-- replace GT with predictions 
     ALL_ANN_FILE: datasets/nuimages/annotations/no_wc/nuimages_v1.0-train.json    
       
-    INVERSE_WEIGHTS: false                # inverse fedloss
+    INVERSE_WEIGHTS: false                 # inverse fedloss
     DETERMINISTIC_FED_LOSS: false           # detfedloss
   ROI_HEADS:
     NUM_CLASSES: 18
@@ -84,7 +84,7 @@ DATALOADER:
   USE_TAR_DATASET: false
 WITH_IMAGE_LABELS: false
 INPUT:
-  MIN_SIZE_TEST: 900
-  MAX_SIZE_TEST: 1600
+  MIN_SIZE_TEST: 640
+  MAX_SIZE_TEST: 640
   # MIN_SIZE_TRAIN: 
-  MAX_SIZE_TRAIN: 1600
+  MAX_SIZE_TRAIN: 640

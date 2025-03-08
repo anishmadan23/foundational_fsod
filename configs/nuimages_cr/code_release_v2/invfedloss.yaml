@@ -16,8 +16,8 @@ MODEL:
     # used for determining sampling strategy during fedloss and its variants; also used to determine pseudonegatives-- replace GT with predictions 
     ALL_ANN_FILE: datasets/nuimages/annotations/no_wc/nuimages_v1.0-train.json    
       
-    INVERSE_WEIGHTS: false                 # inverse fedloss
-    DETERMINISTIC_FED_LOSS: true           # detfedloss
+    INVERSE_WEIGHTS: true                # inverse fedloss
+    DETERMINISTIC_FED_LOSS: false           # detfedloss
   ROI_HEADS:
     NUM_CLASSES: 18
     SCORE_THRESH_TEST: 0.02     # confidence_threshold for score filtering
@@ -84,7 +84,7 @@ DATALOADER:
   USE_TAR_DATASET: false
 WITH_IMAGE_LABELS: false
 INPUT:
-  MIN_SIZE_TEST: 900
-  MAX_SIZE_TEST: 1600
+  MIN_SIZE_TEST: 640
+  MAX_SIZE_TEST: 640
   # MIN_SIZE_TRAIN: 
-  MAX_SIZE_TRAIN: 1600
+  MAX_SIZE_TRAIN: 640

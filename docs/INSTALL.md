@@ -5,17 +5,17 @@
 - PyTorch ≥ 1.8.
   Install them together at [pytorch.org](https://pytorch.org) to make sure of this. Note, please check
   PyTorch version matches that is required by Detectron2.
-- Detectron2: follow [Detectron2 installation instructions](https://detectron2.readthedocs.io/tutorials/install.html), but use the adapted detectron2 repo [here](https://github.com/anishmadan23/detectron2-ffsod) (or look at the commands below)
+- Detectron2: follow [Detectron2 installation instructions](https://detectron2.readthedocs.io/tutorials/install.html), but use the adapted detectron2 repo [here](https://github.com/anishmadan23/detectron2_ffsod_rf) (or look at the commands below)
 
 
 ### Example conda environment setup
 ```bash
 conda create --name detic python=3.8 -y
 conda activate detic
-conda install pytorch torchvision torchaudio cudatoolkit=11.1 -c pytorch-lts -c nvidia
+pip install torch==2.0.0 torchvision==0.15.1 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
 
 # under your working directory
-git clone git@github.com:anishmadan23/detectron2-ffsod.git
+git clone git@github.com:anishmadan23/detectron2_ffsod_rf.git
 cd detectron2
 pip install -e .
 
