@@ -1,8 +1,10 @@
 # Foundational FSOD - Adapted MQDet Codebase
 
-## SWITCH TO MAIN BRANCH FOR DETIC CODEBASE
-## IMP NOTE: Use the [test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_mqdet_annotation_data/no_wc/test_set.json) file for evaluation
-## Installation and Setup
+## Updates
+- Switch to the FSOD_RF20VL branch for the [Roboflow-VL Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
+- Switch to the main branch to run nuImages Detic experiments. 
+- NOTE: Use the [test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_mqdet_annotation_data/no_wc/test_set.json) file for evaluating nuImages test-set performance.
+
 See [MQDet README](MQDET_README.md) for details on installation and setup.
 
 
