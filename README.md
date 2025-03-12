@@ -3,8 +3,11 @@
 [![models](https://img.shields.io/badge/🤗HuggingFace-Model-yellow)](https://huggingface.co/anishmadan23/foundational_fsod/tree/main)
 [![challenge](https://img.shields.io/badge/EvalAI-FSOD_Challenge-green)](https://eval.ai/web/challenges/challenge-page/2270/overview)
 
-## SWITCH TO MQDET BRANCH FOR RUNNING MQDET EXPTS
-## IMP NOTE: Use [the test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_coco_fmt/annotations/test_set.json) file for evaluating performance.
+## Updates
+- Switch to the FSOD_RF20VL branch for the [Roboflow-VL Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
+- Switch to the MQDet branch to run nuImages MQDet experiments. 
+- NOTE: Use [the test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_coco_fmt/annotations/test_set.json) file for evaluating nuImages test-set performance.
+  
 #### [Anish Madan](https://anishmadan23.github.io/), [Neehar Peri](https://www.neeharperi.com/), [Shu Kong](https://aimerykong.github.io/), [Deva Ramanan](https://www.cs.cmu.edu/~deva/)
 
 ![teaser.png](assets/teaser.png)
