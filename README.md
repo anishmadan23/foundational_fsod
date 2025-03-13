@@ -22,7 +22,7 @@ See [installation instructions](docs/INSTALL.md).
 Create `models/` in the root directory and download pre-trained model [here](https://huggingface.co/anishmadan23/foundational_fsod/tree/main/pretrained_models/)
 
 ## Replicating Detic ZS baseline on all datasets in RF-20VL
-0. Make a csv file titled `datasets_links.csv`, with all dataset urls provided on this [webpage](https://app.roboflow.com/roboflow-20-vl-fsod-fa5i3).
+0. Make a csv file titled `datasets_links.csv`, with all dataset urls provided on this [webpage](https://universe.roboflow.com/roboflow20vl-fsod/).
    
 1. We provide the csv file with links: `datasets_links.csv` . To download and preprocess the data, run 
    
