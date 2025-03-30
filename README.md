@@ -12,7 +12,7 @@
 
 ![teaser.png](assets/teaser.png)
 
-## :star: [Foundational FSOD Challenge](https://eval.ai/web/challenges/challenge-page/2270/overview)
+## :star: [Foundational FSOD Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
 We are releasing a [Foundational FSOD challenge](https://eval.ai/web/challenges/challenge-page/2459/overview) as part of the [Workshop on Visual Perception and Learning in an Open World](https://vplow.github.io/vplow_5th.html) at CVPR 2025. We are accepting submissions till 8th June 2025! 
 
 ## Installation
