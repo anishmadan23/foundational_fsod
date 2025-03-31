@@ -604,7 +604,7 @@ class VLDyHead(torch.nn.Module):
             lang_cfg = None
             raise NotImplementedError
 
-        num_classes = cfg.MODEL.DYHEAD.NUM_CLASSES - 1
+        num_classes = cfg.MODEL.DYHEAD.NUM_CLASSES #- 1 #if cfg.MODEL.DYHEAD.NUM_CLASSES > 1 else 1
         num_tokens = cfg.MODEL.LANGUAGE_BACKBONE.MAX_QUERY_LEN
         num_anchors = len(cfg.MODEL.RPN.ASPECT_RATIOS) * cfg.MODEL.RPN.SCALES_PER_OCTAVE
         in_channels = cfg.MODEL.BACKBONE.OUT_CHANNELS
@@ -770,7 +770,7 @@ class VLDyHead(torch.nn.Module):
         logits = []
         bbox_reg = []
         centerness = []
-
+        # import ipdb; ipdb.set_trace()
         feat_inputs = {"visual": x,
                        "lang": language_dict_features}
         
@@ -802,7 +802,7 @@ class VLDyHead(torch.nn.Module):
             proj_tokens = F.normalize(
                 self.contrastive_align_projection_text(embedding), p=2, dim=-1
             )
-
+        # import ipdb; ipdb.set_trace()
         # dot product soft token
         dot_product_logits = None
         dot_product_proj_tokens = None
@@ -836,7 +836,7 @@ class VLDyHead(torch.nn.Module):
         fused_visual_features = None
         if self.cfg.MODEL.RPN.RETURN_FUSED_FEATURES:
             fused_visual_features = []
-
+        # import ipdb; ipdb.set_trace()
         # use the feature from FPN
         for l, feature in enumerate(x):
             logits.append(self.cls_logits(dyhead_tower["visual"][l]))

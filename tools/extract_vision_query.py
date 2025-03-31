@@ -85,7 +85,23 @@ if __name__ == "__main__":
 
     if args.save_path != "":
         os.makedirs(args.save_path, exist_ok=True)
-    if args.dataset == 'objects365':
+    
+    if 'roboflow' in args.dataset:
+        if args.save_path == "":
+            save_path = f'MODEL/rf_data/{args.dataset.split("flow_")[1]}_query_10_sel_{args.add_name}.pth'
+        else:
+            save_path = str(Path(args.save_path, f'{args.dataset.split("flow_")[1]}_query_10_sel_{args.add_name}.pth'))
+
+        cmd = '{} tools/train_net.py --config-file {} --additional_model_config {} --extract_query VISION_QUERY.QUERY_BANK_SAVE_PATH {} VISION_QUERY.QUERY_BANK_PATH "" DATALOADER.NUM_WORKERS 0 {}'\
+                .format(
+                        args.python,
+                        args.config_file,
+                        args.add_config_file,
+                        save_path,
+                        args.opt,
+                        )
+        os.system(cmd)
+    elif args.dataset == 'objects365':
         # extract vision queries for modulated pre-training, num_vision_queries=5000 for default
         if args.save_path == "":
             save_path = 'MODEL/object365_query_5000_sel_{}.pth'.format(args.add_name)

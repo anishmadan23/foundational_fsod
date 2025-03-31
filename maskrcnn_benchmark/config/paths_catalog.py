@@ -386,7 +386,7 @@ class DatasetCatalog(object):
                     factory="PseudoData",
                     args=args,
                 )
-            elif "_dt" in name:
+            elif "_dt" in name and 'fsod' not in name:
                 dataset_file = attrs["dataset_file"]
                 yaml_path = try_to_find(attrs["yaml_path"], return_dir=True)
                 args = dict(

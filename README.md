@@ -1,73 +1,61 @@
-# Foundational FSOD - Adapted MQDet Codebase
+# Foundational FSOD with RoboFlow-20VL: MQDet baseline
+[![arXiv](https://img.shields.io/badge/arXiv-2312.14494-b31b1b.svg)](https://arxiv.org/abs/2312.14494)
+[![challenge](https://img.shields.io/badge/EvalAI-FSOD_Challenge-green)](https://eval.ai/web/challenges/challenge-page/2459/overview)
+
+### This repository is adapted from the [Foundational FSOD paper's code](https://github.com/anishmadan23/foundational_fsod/tree/mqdet). It currently supports MQ-Det baseline for the [RF-20VL Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview). 
+
 
 ## Updates
-- Switch to the FSOD_RF20VL branch for the [Roboflow-VL Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
+- Switch to the FSOD_RF20VL branch for the Detic Baselines as part of the [Roboflow-VL Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
 - Switch to the main branch to run nuImages Detic experiments. 
-- NOTE: Use the [test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_mqdet_annotation_data/no_wc/test_set.json) file for evaluating nuImages test-set performance.
+<!-- - NOTE: Use the [test_set.json](https://huggingface.co/anishmadan23/foundational_fsod/blob/main/nuimages_mqdet_annotation_data/no_wc/test_set.json) file for evaluating nuImages test-set performance. -->
 
 See [MQDet README](MQDET_README.md) for details on installation and setup.
 
 
-## DATA Setup (nuImages)
-
-We follow the basic data organization guidelines provided in the [MQDET codebase](https://github.com/YifanXu74/MQ-Det/blob/main/DATA.md) We describe how to setup [nuImages](https://nuscenes.org/nuimages) below. 
-
-
-## nuImages
-1. First, download the nuImages dataset and place/soft-link it in `ROOT/DATASET/`. We provide COCO-style [annotation files here](https://huggingface.co/anishmadan23/foundational_fsod/tree/main/nuimages_mqdet_annotation_data/no_wc) for ease of use with this repo.  To create these annotation files from scratch, please refer to the nuImages mmdetection3d data creation script (specifically by running [this file](https://github.com/open-mmlab/mmdetection3d/blob/main/tools/dataset_converters/nuimage_converter.py); follow the instructions [here](https://mmdetection3d.readthedocs.io/en/latest/user_guides/useful_tools.html#dataset-conversion)) Also note, that MQDet expects annotation indices to start from 1 and not 0, therefore our annotation files take care of this offset as well.
-```
-$REPOSITORY_ROOT/DATASET
-    nuimages/
-        images/
-            samples/
-        <ann_files_downloaded_from_huggingface>
-```
-2. We provide the [few-shot splits here](https://huggingface.co/anishmadan23/foundational_fsod/tree/main/mqdet_data_splits/nuimages). Place them in `nuimages` as well.
-
-3. Finally, register the few shot dataset according to the relative path in the config file. For example, [configs/vision_query_5shot/nuimages/nuimages_5_shots_seed0_fsod.yaml](configs/vision_query_5shot/nuimages/nuimages_5_shots_seed0_fsod.yaml). You should be good to go and run some expts!
-
-## Sample Commands for Foundational FSOD on nuImages
-
-
-### Step 1: Extract Vision Queries
+## Replicating Detic ZS baseline on all datasets in RF-20VL
+1. We provide the csv file with links: `datasets_links.csv` . To download and preprocess the data, run 
+   
 ```bash
-python tools/extract_vision_query.py --config_file configs/pretrain/my_configs/mq-glip-l-nuim.yaml --add_config_file configs/vision_query_10shot/nuimages/nuimages_10_shots_seed0_fsod.yaml --dataset nuim --num_vision_queries 10 --save_path MODEL/nuimages_fsod_10_shots_seed_0/ --add_name large
+python rf_scripts/preprocess_data.py
 ```
-### Step 2: Run FT-Free Evaluation
 
-#### FT Free Evaluation (Vision+Text)
+2. Generate training/evaluation configs to run baselines
+   
 ```bash
-python -m torch.distributed.launch --nproc_per_node 8 tools/test_grounding_net.py \ 
---config-file configs/pretrain/my_configs/mq-glip-l-nuim.yaml \
---additional_model_config configs/vision_query_10shot/nuimages/nuimages_10_shots_seed0_fsod.yaml \
-VISION_QUERY.QUERY_BANK_PATH MODEL/nuimages_fsod_10_shots_seed_0/nuim_fsod_query_10_pool7_sel_large.pth \
-MODEL.WEIGHT MODEL/mq-glip-l \
-TEST.IMS_PER_BATCH 8 VISION_QUERY.NUM_QUERY_PER_CLASS 10 VISION_QUERY.MAX_QUERY_NUMBER 10 DATASETS.FEW_SHOT 10 OUTPUT_DIR results/nuimages_fsod/10_shots_seed_0/model_large_text_and_vision/ 
+python rf_scripts/generate_cfg_files.py
 ```
 
-#### FT Free Evaluation (Text only)
+3. Generate commands for extracting vision queries, to be used for visual prompting
 
 ```bash
-python -m torch.distributed.launch --nproc_per_node 8 tools/test_grounding_net.py \ 
---config-file configs/pretrain/my_configs/mq-glip-l-nuim.yaml \
---additional_model_config configs/vision_query_10shot/nuimages/nuimages_10_shots_seed0_fsod.yaml \
-VISION_QUERY.QUERY_BANK_PATH MODEL/nuimages_fsod_10_shots_seed_0/nuim_fsod_query_10_pool7_sel_large.pth \
-MODEL.WEIGHT MODEL/mq-glip-l \
-TEST.IMS_PER_BATCH 8 VISION_QUERY.NUM_QUERY_PER_CLASS 10 VISION_QUERY.MAX_QUERY_NUMBER 10 DATASETS.FEW_SHOT 10 OUTPUT_DIR results/nuimages_fsod/10_shots_seed_0/model_large_text_only/ VISION_QUERY.ENABLED False
+python rf_scripts/generate_vision_query_extraction_cmds.py
 ```
 
-#### FT Free Evaluation (Vision only)
+4. Run script with generated commands to extract vision queries
 
-```bash
-python -m torch.distributed.launch --nproc_per_node 8 tools/test_grounding_net.py \ 
---config-file configs/pretrain/my_configs/mq-glip-l-nuim.yaml \
---additional_model_config configs/vision_query_10shot/nuimages/nuimages_10_shots_seed0_fsod.yaml \
-VISION_QUERY.QUERY_BANK_PATH MODEL/nuimages_fsod_10_shots_seed_0/nuim_fsod_query_10_pool7_sel_large.pth \
-MODEL.WEIGHT MODEL/mq-glip-l \
-TEST.IMS_PER_BATCH 8 VISION_QUERY.NUM_QUERY_PER_CLASS 10 VISION_QUERY.MAX_QUERY_NUMBER 10 DATASETS.FEW_SHOT 10 OUTPUT_DIR results/nuimages_fsod/10_shots_seed_0/model_large_text_only/ VISION_QUERY.MASK_DURING_INFERENCE True VISION_QUERY.TEXT_DROPOUT 1.0
+```bash 
+sh rf_scripts/extract_vision_queries.sh
 ```
 
+5.  Generate commands for running fine-tuning free evaluation
+Change number of gpus for each of the experiments (text-only, vision-only, text+vision) in the script before running as mentioned below:
 
+```bash 
+python rf_scripts/generate_ftfree_cmds.py
+```
+
+6. The above command generates 3 shell scripts: 1 for each (text-only, vision-only, text+vision). Run scripts like
+   
+```bash 
+sh rf_scripts/run_ftfree_eval_model_large_text_only.sh
+```
+
+7. Finally, combine predictions for all 3 experiments across datasets into the format used for competition submissions. Note that MQDet results are 1-indexed whereas the competition submissions expect it to be 0-indexed. We take care of this issue in the script below, so no additional checks are required from the user.
+   
+```bash 
+sh rf_scripts/combine_preds.py
+```
 
 
 

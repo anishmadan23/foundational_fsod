@@ -141,6 +141,7 @@ class RPNPostProcessor(torch.nn.Module):
             boxlists (list[BoxList]): the post-processed anchors, after
                 applying box decoding and NMS
         """
+        import ipdb; ipdb.set_trace()
         sampled_boxes = []
         num_levels = len(objectness)
         anchors = list(zip(*anchors))

@@ -331,7 +331,6 @@ def make_data_loader(cfg, is_train=True, is_distributed=False, num_replicas=None
     transforms = None if not is_train and cfg.TEST.USE_MULTISCALE else build_transforms(cfg, is_train)
 
     extra_args = {}
-    # import ipdb; ipdb.set_trace()
     if is_train and cfg.DATASETS.USE_CROWD:
         extra_args['ignore_crowd'] = False
     if is_train and cfg.DATASETS.MAX_BOX > 0:
@@ -431,7 +430,6 @@ def make_data_loader(cfg, is_train=True, is_distributed=False, num_replicas=None
                                           class_concat=cfg.DATASETS.CLASS_CONCAT,
                                           extra_args=extra_args)
     else:
-        # import ipdb; ipdb.set_trace()
         datasets = build_dataset(cfg, dataset_list, transforms, DatasetCatalog, (is_train or is_cache),
                                  class_concat=cfg.DATASETS.CLASS_CONCAT,
                                  extra_args=extra_args)
