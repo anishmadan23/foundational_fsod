@@ -13,3 +13,7 @@ vs_downstream_log/
 vs_final_downstream_log/
 results/
 
+assets/
+configs/rf_configs/
+data/
+gen_data/
