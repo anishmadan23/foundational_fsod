@@ -13,7 +13,7 @@
 See [MQDet README](MQDET_README.md) for details on installation and setup.
 
 
-## Replicating Detic ZS baseline on all datasets in RF-20VL
+## Replicating MQDet baseline on all datasets in RF-20VL
 1. We provide the csv file with links: `datasets_links.csv` . To download and preprocess the data, run 
    
 ```bash
