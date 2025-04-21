@@ -15,6 +15,16 @@
 ## :star: [Foundational FSOD Challenge](https://eval.ai/web/challenges/challenge-page/2459/overview)
 We are releasing a [Foundational FSOD challenge](https://eval.ai/web/challenges/challenge-page/2459/overview) as part of the [Workshop on Visual Perception and Learning in an Open World](https://vplow.github.io/vplow_5th.html) at CVPR 2025. We are accepting submissions till 8th June 2025! 
 
+:rotating_light: Top performing teams can win cash prizes! :rotating_light:
+
+:1st_place_medal: 1st Place: $750
+
+:2nd_place_medal: 2nd Place: $500
+
+:3rd_place_medal: 3rd Place: $250
+
+To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. 
+
 ## Installation
 See [installation instructions](docs/INSTALL.md).
 
