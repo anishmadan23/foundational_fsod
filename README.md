@@ -66,4 +66,19 @@ We thank the authors of the [MQDet Repository](https://github.com/YifanXu74/MQ-D
 
 This repository is released under the Apache 2.0 license as found in the [LICENSE](LICENSE) file.
 
-
+## Citation
+If you find our paper and code repository useful, please cite us:
+```bib
+@article{robicheaux2025roboflow100vl,
+  title={Roboflow100-vl: A multi-domain object detection benchmark for vision-language models},
+  author={Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Nelson, Joseph and Ramanan, Deva and Peri, Neehar},
+  journal={arXiv preprint arXiv:2505.20612},
+  year={2025}
+}
+@article{madan2023revisiting,
+  title={Revisiting Few-Shot Object Detection with Vision-Language Models},
+  author={Madan, Anish and Peri, Neehar and Kong, Shu and Ramanan, Deva},
+  journal={arXiv preprint arXiv:2312.14494},
+  year={2023}
+}
+```
