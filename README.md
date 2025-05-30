@@ -23,7 +23,7 @@ We are releasing a [Foundational FSOD challenge](https://eval.ai/web/challenges/
 
 :3rd_place_medal: 3rd Place: $250
 
-To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. 
+To be eligible for prizes, teams must submit a technical report, open source their code, and provide instructions on how to reproduce their results. Teams must also beat our best performing official baseline to be eligible for prizes. Many thanks to Roboflow for sponsoring prizes!
 
 ## Installation
 See [installation instructions](docs/INSTALL.md).
@@ -77,6 +77,12 @@ We thank the authors of the following repositories for their open-source impleme
 ## Citation
 If you find our paper and code repository useful, please cite us:
 ```bib
+@article{robicheaux2025roboflow100vl,
+  title={Roboflow100-vl: A multi-domain object detection benchmark for vision-language models},
+  author={Robicheaux, Peter and Popov, Matvei and Madan, Anish and Robinson, Isaac and Nelson, Joseph and Ramanan, Deva and Peri, Neehar},
+  journal={arXiv preprint arXiv:2505.20612},
+  year={2025}
+}
 @article{madan2023revisiting,
   title={Revisiting Few-Shot Object Detection with Vision-Language Models},
   author={Madan, Anish and Peri, Neehar and Kong, Shu and Ramanan, Deva},
